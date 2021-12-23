@@ -5,7 +5,7 @@ terraform {
       version = "3.70.0"
     }
   }
-
+  
   backend "s3" {
     bucket         = "jazzygeoff-terraform-state"
     key            = "terraform-state"
