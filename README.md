@@ -1,3 +1,5 @@
+[![Build Status](https://dev.azure.com/geoffreybaldry/terraform/_apis/build/status/geoffreybaldry.infra?branchName=main)](https://dev.azure.com/geoffreybaldry/terraform/_build/latest?definitionId=3&branchName=main)
+
 # Introduction 
 TODO: Give a short introduction of your project. Let this section explain the objectives or the motivation behind this project. 
 
