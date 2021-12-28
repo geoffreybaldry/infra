@@ -14,15 +14,17 @@ pool:
   name: Azure Pipelines
 
 stages:
-  - stage: aws
+  - stage: terraform_setup
     jobs:
-      - job: initialize_state
+      - job: terraform_install
         steps:
           - task: ms-devlabs.custom-terraform-tasks.custom-terraform-installer-task.TerraformInstaller@0
             displayName: 'Terraform : install latest' 
             inputs:
               terraformVersion: latest
 
+      - job: terraform_init
+        steps:
           - task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV2@2
             displayName: 'Terraform : init'
             inputs:
@@ -31,6 +33,8 @@ stages:
               backendAWSBucketName: 'jazzygeoff-terraform-state'
               backendAWSKey: terraform.tfstate
 
+        -job: terraform_validate
+          steps:
           - task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV2@2
             displayName: 'Terraform : validate'
             inputs:
