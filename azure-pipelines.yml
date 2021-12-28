@@ -16,7 +16,7 @@ pool:
 stages:
   - stage: aws
     jobs:
-      - job: initialize state
+      - job: initialize_state
         steps:
           - task: ms-devlabs.custom-terraform-tasks.custom-terraform-installer-task.TerraformInstaller@0
             displayName: Install Terraform latest
