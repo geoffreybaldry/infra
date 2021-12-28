@@ -7,14 +7,27 @@ trigger:
 - main
 - next
 
+#pool:
+#  vmImage: ubuntu-latest
+
 pool:
-  vmImage: ubuntu-latest
+  name: Azure Pipelines
 
-steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+stages:
+  - stage: aws
+    jobs:
+      - job: initialize state
+        steps:
+          - task: ms-devlabs.custom-terraform-tasks.custom-terraform-installer-task.TerraformInstaller@0
+            displayName: Install Terraform latest
+            inputs:
+              terraformVersion: latest
 
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+#steps:
+#- script: echo Hello, world!
+#  displayName: 'Run a one-line script'
+
+#- script: |
+#    echo Add other tasks to build, test, and deploy your project.
+#    echo See https://aka.ms/yaml
+#  displayName: 'Run a multi-line script'
