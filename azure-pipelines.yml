@@ -23,7 +23,7 @@ stages:
             inputs:
               terraformVersion: latest
 
-      - job: terraform_init
+      - job: terraform_init_validate
         dependsOn: terraform_install
         steps:
           - task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV2@2
@@ -34,9 +34,6 @@ stages:
               backendAWSBucketName: 'jazzygeoff-terraform-state'
               backendAWSKey: terraform.tfstate
 
-      - job: terraform_validate
-        dependsOn: terraform_init
-        steps:
           - task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV2@2
             displayName: 'Terraform : validate'
             inputs:
