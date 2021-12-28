@@ -24,6 +24,7 @@ stages:
               terraformVersion: latest
 
       - job: terraform_init
+        depends_on: terraform_install
         steps:
           - task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV2@2
             displayName: 'Terraform : init'
@@ -34,6 +35,7 @@ stages:
               backendAWSKey: terraform.tfstate
 
       - job: terraform_validate
+        depends_on: terraform_init
         steps:
           - task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV2@2
             displayName: 'Terraform : validate'
