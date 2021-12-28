@@ -19,9 +19,23 @@ stages:
       - job: initialize_state
         steps:
           - task: ms-devlabs.custom-terraform-tasks.custom-terraform-installer-task.TerraformInstaller@0
-            displayName: Install Terraform latest
+            displayName: 'Terraform : install latest' 
             inputs:
               terraformVersion: latest
+
+          - task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV2@2
+            displayName: 'Terraform : init'
+            inputs:
+              provider: aws
+              backendServiceAWS: 'AWS for Terraform Service Connection'
+              backendAWSBucketName: 'jazzygeoff-terraform-state'
+              backendAWSKey: terraform.tfstate
+
+          - task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV2@2
+            displayName: 'Terraform : validate'
+            inputs:
+              provider: aws
+              command: validate
 
 #steps:
 #- script: echo Hello, world!
