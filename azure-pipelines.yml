@@ -31,8 +31,8 @@ stages:
             inputs:
               provider: aws
               backendServiceAWS: 'AWS for Terraform Service Connection'
-              backendAWSBucketName: 'jazzygeoff-terraform-state'
-              backendAWSKey: terraform.tfstate
+              backendAWSBucketName: 'jazzy-bucket'
+              backendAWSKey: 'terraform/terraform.tfstate'
 
           - task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV2@2
             displayName: 'Terraform : validate'
@@ -40,11 +40,3 @@ stages:
               provider: aws
               command: validate
 
-#steps:
-#- script: echo Hello, world!
-#  displayName: 'Run a one-line script'
-
-#- script: |
-#    echo Add other tasks to build, test, and deploy your project.
-#    echo See https://aka.ms/yaml
-#  displayName: 'Run a multi-line script'
