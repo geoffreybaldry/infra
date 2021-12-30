@@ -13,30 +13,40 @@ trigger:
 pool:
   name: Azure Pipelines
 
+resources:
+  repositories:
+    - repository: build_templates
+      type: git
+      name: geoffreybaldry/build_templates
+      ref: refs/heads/next
+
 stages:
-  - stage: terraform_setup
+  - stage: aws
     jobs:
-      - job: terraform_install
-        steps:
-          - task: ms-devlabs.custom-terraform-tasks.custom-terraform-installer-task.TerraformInstaller@0
-            displayName: 'Terraform : install latest' 
-            inputs:
-              terraformVersion: latest
+      #- job: terraform_install
+      #  steps:
+      #    - task: ms-devlabs.custom-terraform-tasks.custom-terraform-installer-task.TerraformInstaller@0
+      #      displayName: 'Terraform : install latest' 
+      #      inputs:
+      #        terraformVersion: latest
 
-      - job: terraform_init_validate
-        dependsOn: terraform_install
+      - job: terraform_validate
+        #dependsOn: terraform_install
         steps:
-          - task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV2@2
-            displayName: 'Terraform : init'
-            inputs:
-              provider: aws
-              backendServiceAWS: 'AWS for Terraform Service Connection'
-              backendAWSBucketName: 'jazzy-bucket'
-              backendAWSKey: 'terraform/terraform.tfstate'
+          - template: init.yml@build_templates
+          - script: terraform validate
+            displayName: terraform validate
+          #- task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV2@2
+          #  displayName: 'Terraform : init'
+          #  inputs:
+          #    provider: aws
+          #    backendServiceAWS: 'AWS for Terraform Service Connection'
+          #    backendAWSBucketName: 'jazzy-bucket'
+          #    backendAWSKey: 'terraform/terraform.tfstate'
 
-          - task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV2@2
-            displayName: 'Terraform : validate'
-            inputs:
-              provider: aws
-              command: validate
+          #- task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV2@2
+          #  displayName: 'Terraform : validate'
+          #  inputs:
+          #    provider: aws
+          #    command: validate
 
