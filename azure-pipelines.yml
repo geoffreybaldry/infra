@@ -36,7 +36,7 @@ stages:
         steps:
           - template: init.yml@build_templates
           #- script: terraform validate
-            displayName: terraform validate
+          #  displayName: terraform validate
           #- task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV2@2
           #  displayName: 'Terraform : init'
           #  inputs:
