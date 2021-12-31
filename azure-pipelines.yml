@@ -18,8 +18,8 @@ resources:
     - repository: build_templates
       type: github
       name: geoffreybaldry/build_templates
-      endpoint: geoffreybaldry # The name of the githib service connection
-      ref: refs/heads/next
+      endpoint: geoffreybaldry # The name of the github service connection
+      #ref: refs/heads/next
 
 stages:
   - stage: aws
