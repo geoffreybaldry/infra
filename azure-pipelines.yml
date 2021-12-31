@@ -16,7 +16,7 @@ pool:
 resources:
   repositories:
     - repository: build_templates
-      type: git
+      type: github
       name: geoffreybaldry/build_templates
       ref: refs/heads/next
 
