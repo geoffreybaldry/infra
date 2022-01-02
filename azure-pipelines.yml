@@ -1,14 +1,6 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
-
 trigger:
-- main
-- next
-
-#pool:
-#  vmImage: ubuntu-latest
+  - main
+  - next
 
 pool:
   name: Azure Pipelines
@@ -21,33 +13,17 @@ resources:
       endpoint: geoffreybaldry # The name of the github service connection
       #ref: refs/heads/next
 
-stages:
-  - stage: aws
-    jobs:
-      #- job: terraform_install
-      #  steps:
-      #    - task: ms-devlabs.custom-terraform-tasks.custom-terraform-installer-task.TerraformInstaller@0
-      #      displayName: 'Terraform : install latest' 
-      #      inputs:
-      #        terraformVersion: latest
-
-      - job: terraform_validate
-        #dependsOn: terraform_install
-        steps:
-          - template: init.yml@build_templates
-          #- script: terraform validate
-          #  displayName: terraform validate
-          #- task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV2@2
-          #  displayName: 'Terraform : init'
-          #  inputs:
-          #    provider: aws
-          #    backendServiceAWS: 'AWS for Terraform Service Connection'
-          #    backendAWSBucketName: 'jazzy-bucket'
-          #    backendAWSKey: 'terraform/terraform.tfstate'
-
-          #- task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV2@2
-          #  displayName: 'Terraform : validate'
-          #  inputs:
-          #    provider: aws
-          #    command: validate
-
+#stages:
+#  - stage: aws
+#    jobs:
+#      - job: terraform_validate
+#        #dependsOn: terraform_install
+steps:
+  - template: init.yml@build_templates
+  
+  - task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV2@2
+    displayName: 'Terraform : validate'
+    inputs:
+      provider: aws
+      command: validate
+      backendServiceAWS: 'AWS for Terraform Service Connection'
