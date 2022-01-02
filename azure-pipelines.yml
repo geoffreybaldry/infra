@@ -27,3 +27,10 @@ steps:
       provider: aws
       command: validate
       backendServiceAWS: 'AWS for Terraform Service Connection'
+
+  - task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV2@2
+    displayName: 'Terraform : plan'
+    inputs:
+      provider: aws
+      command: plan
+      environmentServiceNameAWS: 'AWS for Terraform Service Connection'
