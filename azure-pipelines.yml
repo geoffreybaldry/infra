@@ -15,10 +15,10 @@ resources:
 
 variables:
 - group: "terraform-pipeline-vg"
-- name: aws_access_key
-  value: $[variables.aws_access_key]
-- name: aws_secret_key
-  value: $[variables.aws_secret_key]
+#- name: aws_access_key
+#  value: $[variables.aws_access_key]
+#- name: aws_secret_key
+#  value: $[variables.aws_secret_key]
 
 #stages:
 #  - stage: aws
