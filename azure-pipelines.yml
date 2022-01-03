@@ -25,8 +25,8 @@ variables:
 #    jobs:
 #      - job: terraform_validate
 #        #dependsOn: terraform_install
-jobs:
-  - job:
+#jobs:
+#  - job:
 steps:
   - template: init.yml@build_templates
   
