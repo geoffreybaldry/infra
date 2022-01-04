@@ -34,7 +34,7 @@ variables:
   readonly: true
 
 stages:
-  - stage: init_validate
+  - stage: validate_plan
     jobs:
       - job: terraform_validate
         steps:
@@ -50,6 +50,7 @@ stages:
               backendServiceAWS: 'AWS for Terraform Service Connection'
 
       - job: terraform_plan
+        depends_on: terraform_validate
         steps:
           - template: init.yml@build_templates
             parameters:
