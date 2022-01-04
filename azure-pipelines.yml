@@ -29,7 +29,6 @@ resources:
 
 variables:
 - group: "terraform-pipeline-vg"
-  readonly: true
 - name: terraform.version
   value: "latest"
   readonly: true
