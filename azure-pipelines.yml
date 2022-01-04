@@ -56,9 +56,14 @@ stages:
             parameters:
               version: $(terraform.version)
 
-          - task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV2@2
-            displayName: 'Terraform : plan'
-            inputs:
-              provider: aws
-              command: plan
-              environmentServiceNameAWS: 'AWS for Terraform Service Connection'
+          - script:
+            terraform plan -out=tfplan
+          displayName: "Terraform: Init (${{ parameters.workspace }}/${{ parameters.name}})"
+          workingDirectory: ${{ parameters.workingDirectory }}
+
+          #- task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV2@2
+          #  displayName: 'Terraform : plan'
+          #  inputs:
+          #    provider: aws
+          #    command: plan
+          #    environmentServiceNameAWS: 'AWS for Terraform Service Connection'
