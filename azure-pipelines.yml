@@ -56,7 +56,7 @@ stages:
             parameters:
               version: $(terraform.version)
 
-          - script: terraform plan -out=tfplan
+          - script: terraform plan -out=tfplan -backend-config="access_key=$(aws_access_key)" -backend-config="secret_key=$(aws_secret_key)"
             displayName: "Terraform: Plan"
             workingDirectory: $(System.DefaultWorkingDirectory)
 
