@@ -56,9 +56,12 @@ stages:
             parameters:
               version: $(terraform.version)
 
-          - script: terraform plan -out=tfplan -backend-config="access_key=$(aws_access_key)" -backend-config="secret_key=$(aws_secret_key)"
+          - script: terraform plan -input=false -out=tfplan
             displayName: "Terraform: Plan"
             workingDirectory: $(System.DefaultWorkingDirectory)
+            env:
+              AWS_ACCESS_KEY: $(aws_access_key)
+              AWS_SECRET_KEY: $(aws_secret_key)
 
           #- task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV2@2
           #  displayName: 'Terraform : plan'
