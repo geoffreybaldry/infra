@@ -7,15 +7,15 @@ terraform {
   }
   
   backend "s3" {
-    bucket         = "jazzygeoff-terraform-state"
-    key            = "terraform-state"
-    region         = "us-east-1"
+    bucket         = "jazzy-bucket"
+    key            = "terraform/terraform.tfstate"
+    region         = "eu-west-2"
     encrypt        = true
-    #dynamodb_table = "terraform-lock"
+    dynamodb_table = "terraform-state-table"
   }
 }
 
 provider "aws" {
   # Configuration options
-  region = "us-east-1"
+  region = "eu-west-2"
 }

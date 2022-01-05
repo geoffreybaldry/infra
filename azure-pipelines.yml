@@ -1,20 +1,71 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
-
 trigger:
-- main
-- next
+  branches:
+    include:
+      #- main
+      - next
+  #paths: # Commented out while the majority of the work is updating the pipeline
+  #  include:
+  #    - *.tf
+
+#pr:
+#  branches:
+#    include:
+#      - main
+#      - next
+  #paths:
+  #  include:
+  #    - *.tf
 
 pool:
-  vmImage: ubuntu-latest
+  name: Azure Pipelines
 
-steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+resources:
+  repositories:
+    - repository: build_templates
+      type: github
+      name: geoffreybaldry/build_templates
+      endpoint: geoffreybaldry # The name of the github service connection
+      #ref: refs/heads/next
 
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+variables:
+- group: "terraform-pipeline-vg"
+- name: terraform.version
+  value: "latest"
+  readonly: true
+
+stages:
+  - stage: validate_plan
+    jobs:
+      - job: terraform_validate
+        steps:
+          - template: init.yml@build_templates
+            parameters:
+              version: $(terraform.version)
+          
+          - task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV2@2
+            displayName: 'Terraform : validate'
+            inputs:
+              provider: aws
+              command: validate
+              backendServiceAWS: 'AWS for Terraform Service Connection'
+
+      - job: terraform_plan
+        dependsOn: terraform_validate
+        steps:
+          - template: init.yml@build_templates
+            parameters:
+              version: $(terraform.version)
+
+          - script: terraform plan -input=false -out=tfplan
+            displayName: "Terraform: Plan"
+            workingDirectory: $(System.DefaultWorkingDirectory)
+            env:
+              AWS_ACCESS_KEY: $(aws_access_key)
+              AWS_SECRET_KEY: $(aws_secret_key)
+
+          #- task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV2@2
+          #  displayName: 'Terraform : plan'
+          #  inputs:
+          #    provider: aws
+          #    command: plan
+          #    environmentServiceNameAWS: 'AWS for Terraform Service Connection'
