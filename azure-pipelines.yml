@@ -7,11 +7,11 @@ trigger:
   #  include:
   #    - *.tf
 
-pr:
-  branches:
-    include:
-      - main
-      - next
+#pr:
+#  branches:
+#    include:
+#      - main
+#      - next
   #paths:
   #  include:
   #    - *.tf
