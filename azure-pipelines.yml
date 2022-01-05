@@ -58,7 +58,7 @@ stages:
 
           - script: terraform plan -out=tfplan
             displayName: "Terraform: Plan"
-            workingDirectory: ${{ parameters.workingDirectory }}
+            workingDirectory: $(System.DefaultWorkingDirectory)
 
           #- task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV2@2
           #  displayName: 'Terraform : plan'
