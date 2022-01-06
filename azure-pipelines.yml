@@ -70,7 +70,7 @@ stages:
 
                 terraform plan \
                   -input=false \
-                  -out= ${BUILD_BUILDNUMBER}.tfplan 
+                  -out=${BUILD_BUILDNUMBER}.tfplan 
 
           #- template: publish_plan.yml@build_templates      
 
