@@ -45,7 +45,7 @@ stages:
           - task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV2@2
             displayName: 'Terraform: validate'
             inputs:
-              workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/'
+              workingDirectory: '$(System.DefaultWorkingDirectory)'
               provider: aws
               command: validate
               backendServiceAWS: 'AWS for Terraform Service Connection'
@@ -65,7 +65,7 @@ stages:
               AWS_SECRET_KEY: $(aws_secret_key)
             inputs:
               targetType: "inline"
-              workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/'
+              workingDirectory: '$(System.DefaultWorkingDirectory)'
               script: |
                 set -euo pipefail
 
