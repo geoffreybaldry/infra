@@ -34,7 +34,7 @@ variables:
   readonly: true
 
 stages:
-  - stage: validate_plan
+  - stage: build
     jobs:
       - job: terraform_validate
         steps:
@@ -43,7 +43,7 @@ stages:
               version: $(terraform.version)
           
           - task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV2@2
-            displayName: 'Terraform : validate'
+            displayName: 'Terraform: validate'
             inputs:
               provider: aws
               command: validate
@@ -56,19 +56,36 @@ stages:
             parameters:
               version: $(terraform.version)
 
-          - script: terraform plan -input=false -out=tfplan
-            displayName: "Terraform: Plan"
-            workingDirectory: $(System.DefaultWorkingDirectory)
+          - task: Bash@3
+            #name: "terraform plan"
+            displayName: "Terraform: plan"
             env:
               AWS_ACCESS_KEY: $(aws_access_key)
               AWS_SECRET_KEY: $(aws_secret_key)
-
-          - task: CmdLine@2
             inputs:
+              targetType: "inline"
+              workingDirectory: $(System.DefaultWorkingDirectory)
               script: |
-                echo  '$(System.DefaultWorkingDirectory)'
-                dir
-                dir subfoldername
+                set -euo pipefaile
+
+                terraform plan \
+                  -input=false \
+                  -out= $(BUILD_BUILDNUMBER).tfplan 
+
+          #- template: publish_plan.yml@build_templates      
+
+          #- script: terraform plan -input=false -out=tfplan
+          #  displayName: "Terraform: plan"
+          #  workingDirectory: $(System.DefaultWorkingDirectory)
+          #  env:
+          #    AWS_ACCESS_KEY: $(aws_access_key)
+          #    AWS_SECRET_KEY: $(aws_secret_key)
+
+          #- task: ArchiveFiles@2
+          #  displayName: "Artifact: create plan artifact"
+          #  inputs:
+          #    rootFolderOrFile: 
+
 
           #- task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV2@2
           #  displayName: 'Terraform : plan'
