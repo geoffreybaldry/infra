@@ -66,7 +66,7 @@ stages:
               targetType: "inline"
               workingDirectory: $(System.DefaultWorkingDirectory)
               script: |
-                set -euo pipefaile
+                set -euo pipefail
 
                 terraform plan \
                   -input=false \
