@@ -72,7 +72,7 @@ stages:
                   -input=false \
                   -out=${BUILD_BUILDNUMBER}.tfplan 
 
-          #- template: publish_plan.yml@build_templates      
+          - template: publish_plan.yml@build_templates      
 
           #- script: terraform plan -input=false -out=tfplan
           #  displayName: "Terraform: plan"
@@ -86,10 +86,3 @@ stages:
           #  inputs:
           #    rootFolderOrFile: 
 
-
-          #- task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV2@2
-          #  displayName: 'Terraform : plan'
-          #  inputs:
-          #    provider: aws
-          #    command: plan
-          #    environmentServiceNameAWS: 'AWS for Terraform Service Connection'
