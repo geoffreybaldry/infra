@@ -84,7 +84,7 @@ stages:
           runOnce:
             deploy:
               steps:
-                - template: extract_plan@build_templates
+                - template: extract_plan.yml@build_templates
                 
                 - task: Bash@3
                   displayName: "Terraform Apply"
