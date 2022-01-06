@@ -63,6 +63,13 @@ stages:
               AWS_ACCESS_KEY: $(aws_access_key)
               AWS_SECRET_KEY: $(aws_secret_key)
 
+          - task: CmdLine@2
+            inputs:
+              script: |
+                echo  '$(System.DefaultWorkingDirectory)'
+                dir
+                dir subfoldername
+
           #- task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV2@2
           #  displayName: 'Terraform : plan'
           #  inputs:
