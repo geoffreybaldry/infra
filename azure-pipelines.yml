@@ -74,15 +74,32 @@ stages:
 
           - template: publish_plan.yml@build_templates      
 
-          #- script: terraform plan -input=false -out=tfplan
-          #  displayName: "Terraform: plan"
-          #  workingDirectory: $(System.DefaultWorkingDirectory)
-          #  env:
-          #    AWS_ACCESS_KEY: $(aws_access_key)
-          #    AWS_SECRET_KEY: $(aws_secret_key)
+  - stage: deploy
+    jobs:
+      - deployment: terraform
+        condition: succeeded()
+        displayName: "Terraform: Deploy"
+        environment: "dev"
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - template: extract_plan@build_templates
+                
+                - task: Bash@3
+                  displayName: "Terraform Apply"
+                  env:
+                    AWS_ACCESS_KEY: $(aws_access_key)
+                    AWS_SECRET_KEY: $(aws_secret_key)
+                  inputs:
+                    targetType: "inline"
+                    workingDirectory: $(System.DefaultWorkingDirectory)
+                    script: |
+                      set -euo pipefail
 
-          #- task: ArchiveFiles@2
-          #  displayName: "Artifact: create plan artifact"
-          #  inputs:
-          #    rootFolderOrFile: 
+                      terraform apply \
+                        -input=false \
+                        ${BUILD_BUILDNUMBER}.tfplan 
+
+
 
