@@ -87,32 +87,34 @@ stages:
 
   - stage: deploy
     jobs:
-      - job: terraform_deploy
+      - deployment: terraform
+        condition: succeeded()
         displayName: "Terraform Deploy"
-          - deployment: terraform
-            condition: succeeded()
-            displayName: "Terraform: Deploy"
-            environment: "dev"
-            strategy:
-              runOnce:
-                deploy:
-                  steps:
-                    - template: terraform/extract_plan.yml@build_templates
-                    
-                    - task: Bash@3
-                      displayName: "Terraform Apply"
-                      env:
-                        AWS_ACCESS_KEY: $(aws_access_key)
-                        AWS_SECRET_KEY: $(aws_secret_key)
-                      inputs:
-                        targetType: "inline"
-                        workingDirectory: $(project_folder)
-                        script: |
-                          set -euo pipefail
+        environment: "dev"
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - template: terraform/extract_plan.yml@build_templates
 
-                          terraform apply \
-                            -input=false \
-                            ${BUILD_BUILDNUMBER}.tfplan 
+                - template: terraform/install.yml@build_templates
+                  parameters:
+                    version: $(terraform.version)
+                
+                - task: Bash@3
+                  displayName: "Terraform Apply"
+                  env:
+                    AWS_ACCESS_KEY: $(aws_access_key)
+                    AWS_SECRET_KEY: $(aws_secret_key)
+                  inputs:
+                    targetType: "inline"
+                    workingDirectory: $(project_folder)
+                    script: |
+                      set -euo pipefail
+
+                      terraform apply \
+                        -input=false \
+                        ${BUILD_BUILDNUMBER}.tfplan 
 
 
 
