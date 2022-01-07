@@ -38,8 +38,10 @@ variables:
 
 stages:
   - stage: build
+
     jobs:
       - job: terraform_validate
+        displayName: "Terraform Validate"
         steps:
           - template: terraform/install.yml@build_templates
             parameters:
@@ -56,6 +58,7 @@ stages:
               backendServiceAWS: 'AWS for Terraform Service Connection'
 
       - job: terraform_plan
+        displayName: "Terraform Plan"
         dependsOn: terraform_validate
         steps:
           - template: terraform/install.yml@build_templates
@@ -84,30 +87,32 @@ stages:
 
   - stage: deploy
     jobs:
-      - deployment: terraform
-        condition: succeeded()
-        displayName: "Terraform: Deploy"
-        environment: "dev"
-        strategy:
-          runOnce:
-            deploy:
-              steps:
-                - template: terraform/extract_plan.yml@build_templates
-                
-                - task: Bash@3
-                  displayName: "Terraform Apply"
-                  env:
-                    AWS_ACCESS_KEY: $(aws_access_key)
-                    AWS_SECRET_KEY: $(aws_secret_key)
-                  inputs:
-                    targetType: "inline"
-                    workingDirectory: $(project_folder)
-                    script: |
-                      set -euo pipefail
+      - job: terraform_deploy
+        displayName: "Terraform Deploy"
+          - deployment: terraform
+            condition: succeeded()
+            displayName: "Terraform: Deploy"
+            environment: "dev"
+            strategy:
+              runOnce:
+                deploy:
+                  steps:
+                    - template: terraform/extract_plan.yml@build_templates
+                    
+                    - task: Bash@3
+                      displayName: "Terraform Apply"
+                      env:
+                        AWS_ACCESS_KEY: $(aws_access_key)
+                        AWS_SECRET_KEY: $(aws_secret_key)
+                      inputs:
+                        targetType: "inline"
+                        workingDirectory: $(project_folder)
+                        script: |
+                          set -euo pipefail
 
-                      terraform apply \
-                        -input=false \
-                        ${BUILD_BUILDNUMBER}.tfplan 
+                          terraform apply \
+                            -input=false \
+                            ${BUILD_BUILDNUMBER}.tfplan 
 
 
 
