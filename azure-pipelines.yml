@@ -34,7 +34,7 @@ variables:
   readonly: true
 - name: project_folder
   value: "infrastructure"
-  readonlt: true
+  readonly: true
 
 stages:
   - stage: build
@@ -48,7 +48,7 @@ stages:
           - task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV2@2
             displayName: 'Terraform: validate'
             inputs:
-              workingDirectory: '$(System.DefaultWorkingDirectory)'
+              workingDirectory: '$(project_folder)'
               provider: aws
               command: validate
               backendServiceAWS: 'AWS for Terraform Service Connection'
@@ -68,7 +68,7 @@ stages:
               AWS_SECRET_KEY: $(aws_secret_key)
             inputs:
               targetType: "inline"
-              workingDirectory: '$(System.DefaultWorkingDirectory)'
+              workingDirectory: '$(project_folder)'
               script: |
                 set -euo pipefail
 
