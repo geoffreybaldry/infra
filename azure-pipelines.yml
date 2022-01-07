@@ -32,6 +32,9 @@ variables:
 - name: terraform.version
   value: "latest"
   readonly: true
+- name: project_folder
+  value: "infrastructure"
+  readonlt: true
 
 stages:
   - stage: build
