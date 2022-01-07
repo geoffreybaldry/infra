@@ -41,10 +41,12 @@ stages:
     jobs:
       - job: terraform_validate
         steps:
-          - template: init.yml@build_templates
+          - template: terraform/install.yml@build_templates
             parameters:
               version: $(terraform.version)
-          
+
+          - template: terraform/init.yml@build_templates
+
           - task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV2@2
             displayName: 'Terraform: validate'
             inputs:
@@ -56,9 +58,11 @@ stages:
       - job: terraform_plan
         dependsOn: terraform_validate
         steps:
-          - template: init.yml@build_templates
+          - template: terraform/install.yml@build_templates
             parameters:
               version: $(terraform.version)
+
+          - template: terraform/init.yml@build_templates
 
           - task: Bash@3
             #name: "terraform plan"
@@ -76,7 +80,7 @@ stages:
                   -input=false \
                   -out=${BUILD_BUILDNUMBER}.tfplan 
 
-          - template: publish_plan.yml@build_templates      
+          - template: terraform/publish_plan.yml@build_templates      
 
   - stage: deploy
     jobs:
@@ -88,11 +92,7 @@ stages:
           runOnce:
             deploy:
               steps:
-                - template: init.yml@build_templates
-                  parameters:
-                    version: $(terraform.version)
-
-                - template: extract_plan.yml@build_templates
+                - template: terraform/extract_plan.yml@build_templates
                 
                 - task: Bash@3
                   displayName: "Terraform Apply"
