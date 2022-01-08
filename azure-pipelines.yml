@@ -42,9 +42,7 @@ stages:
     - group: 'terraform-dev'
   - ${{ if eq(variables['isProd'], 'true') }}:
   - group: 'terraform-prod'
-  
 
-  value: false
   - stage: build
 
     jobs:
