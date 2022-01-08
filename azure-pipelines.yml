@@ -28,7 +28,6 @@ resources:
       #ref: refs/heads/next
 
 variables:
-- group: "terraform-pipeline-vg"
 - name: terraform.version
   value: "latest"
   readonly: true
@@ -36,7 +35,16 @@ variables:
   value: "infrastructure"
   readonly: true
 
+
 stages:
+  variables:
+  - ${{ if eq(variables['isProd'], 'false') }}:
+    - group: 'terraform-dev'
+  - ${{ if eq(variables['isProd'], 'true') }}:
+  - group: 'terraform-prod'
+  
+
+  value: false
   - stage: build
 
     jobs:
