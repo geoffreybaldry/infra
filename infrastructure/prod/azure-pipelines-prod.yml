@@ -91,7 +91,7 @@ stages:
       - deployment: terraform
         condition: succeeded()
         displayName: "Terraform Deploy"
-        environment: "dev"
+        environment: "prod"
         strategy:
           runOnce:
             deploy:
