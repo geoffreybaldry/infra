@@ -28,21 +28,15 @@ resources:
       #ref: refs/heads/next
 
 variables:
+- group: 'terraform-dev'
 - name: terraform.version
   value: "latest"
   readonly: true
-- name: project_folder
-  value: "infrastructure"
+- name: project.folder
+  value: "infrastructure/dev"
   readonly: true
 
-
 stages:
-  variables:
-  - ${{ if eq(variables['isProd'], 'false') }}:
-    - group: 'terraform-dev'
-  - ${{ if eq(variables['isProd'], 'true') }}:
-    - group: 'terraform-prod'
-
   - stage: build
 
     jobs:
@@ -82,7 +76,7 @@ stages:
               AWS_SECRET_KEY: $(aws_secret_key)
             inputs:
               targetType: "inline"
-              workingDirectory: $(project_folder)
+              workingDirectory: $(project.folder)
               script: |
                 set -euo pipefail
 
@@ -115,7 +109,7 @@ stages:
                     AWS_SECRET_KEY: $(aws_secret_key)
                   inputs:
                     targetType: "inline"
-                    workingDirectory: $(project_folder)
+                    workingDirectory: $(project.folder)
                     script: |
                       set -euo pipefail
 
