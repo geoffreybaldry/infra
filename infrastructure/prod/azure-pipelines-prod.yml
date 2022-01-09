@@ -116,6 +116,3 @@ stages:
                       terraform apply \
                         -input=false \
                         ${BUILD_BUILDNUMBER}.tfplan 
-
-
-
