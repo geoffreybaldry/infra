@@ -51,14 +51,6 @@ stages:
 
           - template: terraform/validate.yml@build_templates
 
-          #- task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV2@2
-          #  displayName: 'Terraform: validate'
-          #  inputs:
-          #    workingDirectory: $(project_folder)
-          #    provider: aws
-          #    command: validate
-          #    backendServiceAWS: 'AWS for Terraform Service Connection'
-
       - job: terraform_plan
         displayName: "Terraform Plan"
         dependsOn: terraform_validate
