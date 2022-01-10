@@ -1,20 +1,20 @@
 trigger:
   branches:
     include:
-      #- main
+      - main
       - next
-  #paths: # Commented out while the majority of the work is updating the pipeline
-  #  include:
-  #    - *.tf
+  paths: 
+    include:
+      - infrastructure/prod/*
 
-#pr:
-#  branches:
-#    include:
-#      - main
-#      - next
-  #paths:
-  #  include:
-  #    - *.tf
+pr:
+  branches:
+    include:
+      - main
+      - next
+  paths:
+    include:
+      - infrastructure/prod/*
 
 pool:
   name: Azure Pipelines
