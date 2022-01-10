@@ -12,4 +12,6 @@ terraform {
 provider "aws" {
   # Configuration options
   region = "eu-west-2"
+  shared_credentials_file = "C:\\Users\\geoff\\.aws\\credentials"
+  profile = "terraform-dev"
 }
