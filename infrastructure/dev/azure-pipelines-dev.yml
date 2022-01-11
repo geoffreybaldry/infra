@@ -78,7 +78,8 @@ stages:
 
           - template: terraform/publish_plan.yml@build_templates      
 
-  - stage: deploy
+  - stage: 
+    condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest')) # Don't deploy on pull request
     jobs:
       - deployment: terraform
         condition: succeeded()
