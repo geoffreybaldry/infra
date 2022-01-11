@@ -7,14 +7,14 @@ trigger:
     include:
       - infrastructure/dev/*
 
-#pr:
-#  branches:
-#    include:
-#      - main
-#      - next
-  #paths:
-  #  include:
-  #    - *.tf
+pr:
+  branches:
+    include:
+      - main
+      - next
+  paths:
+    include:
+      - infrastructure/dev/*
 
 pool:
   name: Azure Pipelines
