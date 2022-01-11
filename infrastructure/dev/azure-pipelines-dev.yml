@@ -7,14 +7,14 @@ trigger:
     include:
       - infrastructure/dev/*
 
-#pr:
-#  branches:
-#    include:
-#      - main
-#      - next
-  #paths:
-  #  include:
-  #    - *.tf
+pr:
+  branches:
+    include:
+      - main
+      - next
+  paths:
+    include:
+      - infrastructure/dev/*
 
 pool:
   name: Azure Pipelines
@@ -78,7 +78,11 @@ stages:
 
           - template: terraform/publish_plan.yml@build_templates      
 
-  - stage: deploy
+  - stage: 
+    condition: |
+      and(succeeded(),
+      ne(variables['Build.Reason'], 'PullRequest'),
+      eq(variables['Build.SourceBranch'], 'refs/heads/main'))
     jobs:
       - deployment: terraform
         condition: succeeded()
